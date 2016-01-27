@@ -107,4 +107,21 @@ describe Pushpop::Twitter do
       expect(result.id).to eq(45297280)
     end
   end
+
+  describe 'user_timeline' do
+    it 'gets a user_timeline' do
+      step = Pushpop::Twitter.new do |last_response|
+        user_timeline "twitterapi", {count: 2}
+      end
+
+      stub_request(:post, "https://api.twitter.com/oauth2/token").
+        with(:body => "grant_type=client_credentials")
+
+      stub_request(:get, "https://api.twitter.com/1.1/statuses/user_timeline.json?count=2&screen_name=twitterapi").
+        to_return(body: File.read("spec/fixtures/user_timeline.json"))
+
+      result = step.run
+      expect(result.first.id).to eq(240859602684612608)
+    end
+  end
 end

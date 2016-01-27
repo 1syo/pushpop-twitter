@@ -37,6 +37,8 @@ module Pushpop
           @twitter.favorites @options
         when 'user'
           @twitter.user @id_param, @options
+        when 'user_timeline'
+          @twitter.user_timeline @id_param, @options
         else
           raise 'No command specified!'
         end
@@ -74,6 +76,12 @@ module Pushpop
 
     def user(id_param, options={})
       @command = 'user'
+      @id_param = id_param
+      @options = options
+    end
+
+    def user_timeline(id_param, options={})
+      @command = 'user_timeline'
       @id_param = id_param
       @options = options
     end
